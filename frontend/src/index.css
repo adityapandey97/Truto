@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #0B0D13;
+    --bg-panel: #11141E;
+    --bg-surface: #161A28;
+    --border-color: #23293D;
+  }
+
+  body {
+    @apply bg-codepilot-bg text-codepilot-text antialiased min-h-screen;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbars for code panels & chat */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B0D13;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #23293D;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+  }
+}
+
+@layer utilities {
+  .border-subtle {
+    border-color: #23293D;
+  }
+  .bg-panel-gradient {
+    background: linear-gradient(180deg, rgba(22, 26, 40, 0.7) 0%, rgba(17, 20, 30, 0.95) 100%);
+  }
+}
