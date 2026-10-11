@@ -9,7 +9,6 @@ import {
   User,
   Settings,
   LogOut,
-  Sparkles,
 } from 'lucide-react';
 import { useUI } from '../../context/UIContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';

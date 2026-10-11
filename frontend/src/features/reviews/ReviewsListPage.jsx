@@ -4,13 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   GitPullRequest,
   Search,
-  Filter,
-  CheckCircle2,
-  XCircle,
-  Clock,
   FileCode2,
   ChevronRight,
-  Plus,
 } from 'lucide-react';
 import { reviewService } from '../../services/reviewService.js';
 import { PageHeader } from '../../components/layout/PageHeader.jsx';

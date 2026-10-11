@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { User, Mail, Briefcase, Building, Save, X, Sparkles } from 'lucide-react';
+import { User, Mail, Briefcase, Building, Save, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { PageHeader } from '../../components/layout/PageHeader.jsx';
-import { Card, CardHeader } from '../../components/ui/Card.jsx';
+import { Card } from '../../components/ui/Card.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import { DemoBanner } from '../../components/shared/DemoBanner.jsx';

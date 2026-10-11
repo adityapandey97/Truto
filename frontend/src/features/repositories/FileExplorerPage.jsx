@@ -16,13 +16,11 @@ import {
   Search,
   ArrowLeft,
   Sparkles,
-  Info,
   Check,
 } from 'lucide-react';
 import { repositoryService } from '../../services/repositoryService.js';
 import { assistantService } from '../../services/assistantService.js';
 import { Button } from '../../components/ui/Button.jsx';
-import { Badge } from '../../components/ui/Badge.jsx';
 import { CardSkeleton } from '../../components/ui/Skeleton.jsx';
 import { ErrorState } from '../../components/ui/ErrorState.jsx';
 import { DemoBanner } from '../../components/shared/DemoBanner.jsx';
@@ -112,7 +110,7 @@ export function FileExplorerPage() {
   const navigate = useNavigate();
 
   const [fileSearch, setFileSearch] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFilePath, setSelectedFilePath] = useState(null);
   const [copied, setCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedCode, setEditedCode] = useState('');
@@ -127,19 +125,20 @@ export function FileExplorerPage() {
     queryFn: () => repositoryService.getRepositoryById(repositoryId),
   });
 
-  const files = repo?.files || [];
+  const files = useMemo(() => repo?.files || [], [repo?.files]);
   const allFilesList = useMemo(() => flattenFiles(files), [files]);
 
-  // Set initial selected file if none selected
-  useMemo(() => {
-    if (!selectedFile && allFilesList.length > 0) {
-      setSelectedFile(allFilesList[0]);
-      setEditedCode(allFilesList[0].content);
+  const selectedFile = useMemo(() => {
+    if (selectedFilePath) {
+      return allFilesList.find((f) => f.path === selectedFilePath) || allFilesList[0] || null;
     }
-  }, [allFilesList, selectedFile]);
+    return allFilesList[0] || null;
+  }, [allFilesList, selectedFilePath]);
+
+  const currentContent = editedCode !== '' ? editedCode : (selectedFile?.content || '');
 
   const handleSelectFile = (file) => {
-    setSelectedFile(file);
+    setSelectedFilePath(file.path);
     setEditedCode(file.content);
     setIsEditing(false);
     setActiveTab('editor');
@@ -147,7 +146,7 @@ export function FileExplorerPage() {
 
   const handleCopyCode = () => {
     if (selectedFile) {
-      navigator.clipboard.writeText(editedCode || selectedFile.content);
+      navigator.clipboard.writeText(currentContent);
       setCopied(true);
       toast.success('File contents copied');
       setTimeout(() => setCopied(false), 2000);
@@ -156,7 +155,7 @@ export function FileExplorerPage() {
 
   const handleDownload = () => {
     if (!selectedFile) return;
-    const blob = new Blob([editedCode || selectedFile.content], {
+    const blob = new Blob([currentContent], {
       type: 'text/plain;charset=utf-8',
     });
     const url = URL.createObjectURL(blob);

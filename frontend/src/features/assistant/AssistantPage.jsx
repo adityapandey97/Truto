@@ -8,16 +8,8 @@ import {
   Trash2,
   Edit2,
   Sparkles,
-  Paperclip,
-  FolderGit2,
-  CornerDownLeft,
   Search,
-  Clock,
-  Check,
-  Code2,
   FileCode,
-  X,
-  ChevronRight,
 } from 'lucide-react';
 import { assistantService } from '../../services/assistantService.js';
 import { repositoryService } from '../../services/repositoryService.js';

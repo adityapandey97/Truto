@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import { assistantService } from '../services/assistantService.js';
-import { deterministicPromptResponses } from '../data/conversations.js';
 
 describe('Assistant Service & Deterministic AI Logic', () => {
   it('creates and retrieves a new conversation', async () => {

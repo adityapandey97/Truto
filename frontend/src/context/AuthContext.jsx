@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(false);
 
-  const login = async ({ email, password }) => {
+  const login = async ({ email, password: _password }) => {
     setLoading(true);
     // Artificial mock auth delay
     await new Promise((res) => setTimeout(res, 500));

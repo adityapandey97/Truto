@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import {
-  Settings as SettingsIcon,
   Moon,
   Sun,
-  Monitor,
-  Code,
-  Bell,
-  Sidebar,
   Check,
 } from 'lucide-react';
 import { useUI } from '../../context/UIContext.jsx';

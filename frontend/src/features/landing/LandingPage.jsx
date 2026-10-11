@@ -6,10 +6,7 @@ import {
   Bot,
   GitPullRequest,
   Activity,
-  Layers,
   Terminal,
-  Cpu,
-  ShieldCheck,
   CheckCircle,
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button.jsx';
@@ -247,7 +244,7 @@ export function LandingPage() {
             { step: '03', title: 'Context Retrieval', desc: 'Semantic search & relevance scoring' },
             { step: '04', title: 'AI Assistant', desc: 'Conversational code synthesis & answers' },
             { step: '05', title: 'Code Reviews', desc: 'Diff inspection & interactive verification' },
-          ].map((item, idx) => (
+          ].map((item) => (
             <div key={item.step} className="flex-1 p-4 rounded-xl bg-codepilot-panel border border-codepilot-border text-left w-full">
               <span className="text-[10px] font-mono text-indigo-400 font-bold">
                 {item.step}

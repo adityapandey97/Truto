@@ -5,13 +5,9 @@ import {
   FolderGit2,
   Plus,
   Search,
-  Filter,
-  ArrowUpDown,
-  ExternalLink,
   GitBranch,
   FileCode2,
   Clock,
-  ChevronRight,
 } from 'lucide-react';
 import { repositoryService } from '../../services/repositoryService.js';
 import { PageHeader } from '../../components/layout/PageHeader.jsx';

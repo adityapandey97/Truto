@@ -7,12 +7,9 @@ import {
   Clock,
   Play,
   Search,
-  Filter,
-  FileCode2,
   ChevronDown,
   ChevronRight,
   RotateCw,
-  X,
   Bug,
 } from 'lucide-react';
 import {
@@ -31,8 +28,6 @@ import { Badge } from '../../components/ui/Badge.jsx';
 import { Card, CardHeader } from '../../components/ui/Card.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import { Modal } from '../../components/ui/Modal.jsx';
-import { CardSkeleton } from '../../components/ui/Skeleton.jsx';
-import { ErrorState } from '../../components/ui/ErrorState.jsx';
 import { DemoBanner } from '../../components/shared/DemoBanner.jsx';
 import toast from 'react-hot-toast';
 
@@ -44,7 +39,6 @@ export function TestingDashboardPage() {
 
   const {
     data: summary,
-    isLoading: summaryLoading,
     refetch: refetchSummary,
   } = useQuery({
     queryKey: ['test-summary'],
@@ -53,7 +47,6 @@ export function TestingDashboardPage() {
 
   const {
     data: suites = [],
-    isLoading: suitesLoading,
     refetch: refetchSuites,
   } = useQuery({
     queryKey: ['test-suites'],

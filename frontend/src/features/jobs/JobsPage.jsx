@@ -2,14 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  Activity,
   Search,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  RotateCcw,
   ChevronRight,
-  Filter,
 } from 'lucide-react';
 import { jobService } from '../../services/jobService.js';
 import { PageHeader } from '../../components/layout/PageHeader.jsx';

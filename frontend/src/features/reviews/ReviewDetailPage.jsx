@@ -1,17 +1,13 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { DiffEditor } from '@monaco-editor/react';
 import {
-  GitPullRequest,
   CheckCircle2,
   XCircle,
-  Clock,
   ArrowLeft,
   FileCode2,
-  MessageSquare,
   Send,
-  AlertCircle,
   Split,
   Columns,
 } from 'lucide-react';
@@ -28,7 +24,6 @@ import toast from 'react-hot-toast';
 
 export function ReviewDetailPage() {
   const { reviewId } = useParams();
-  const navigate = useNavigate();
 
   const [sideBySide, setSideBySide] = useState(true);
   const [confirmAction, setConfirmAction] = useState(null); // 'approved' | 'rejected'

@@ -5,15 +5,11 @@ import {
   FolderGit2,
   Bot,
   Activity,
-  GitPullRequest,
   Plus,
   ArrowRight,
   CheckCircle2,
   Clock,
-  Sparkles,
-  Layers,
   ChevronRight,
-  ExternalLink,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -70,7 +66,6 @@ export function DashboardPage() {
 
   const {
     data: conversations = [],
-    isLoading: convsLoading,
   } = useQuery({
     queryKey: ['dashboard-convs'],
     queryFn: () => assistantService.getConversations(),
@@ -78,7 +73,6 @@ export function DashboardPage() {
 
   const {
     data: jobs = [],
-    isLoading: jobsLoading,
   } = useQuery({
     queryKey: ['dashboard-jobs'],
     queryFn: () => jobService.getJobs(),

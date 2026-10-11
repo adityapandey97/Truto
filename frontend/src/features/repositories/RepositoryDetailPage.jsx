@@ -1,17 +1,13 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  FolderGit2,
   GitBranch,
   FileCode2,
   Bot,
   ExternalLink,
-  Clock,
-  Sparkles,
   Star,
   Users,
   GitCommit,
-  Layers,
   ArrowLeft,
 } from 'lucide-react';
 import { repositoryService } from '../../services/repositoryService.js';
