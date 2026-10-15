@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # MongoDB Database Service
+  mongodb:
+    image: mongo:7.0
+    container_name: codepilot-mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: codepilot
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - codepilot-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Express.js REST API Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: codepilot-backend
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://mongodb:27017/codepilot
+      CORS_ORIGIN: http://localhost:5173,http://localhost:3000
+      JWT_SECRET: production-grade-cryptographic-jwt-secret-min-32-chars!
+      JWT_EXPIRES_IN: 15m
+      REFRESH_TOKEN_EXPIRES_IN: 7d
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - codepilot-network
+
+  # React / Vite Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: codepilot-frontend
+    restart: unless-stopped
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api
+      - VITE_DEMO_MODE=false
+    depends_on:
+      - backend
+    networks:
+      - codepilot-network
+
+networks:
+  codepilot-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
