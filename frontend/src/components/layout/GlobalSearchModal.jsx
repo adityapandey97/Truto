@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, FolderGit2, MessageSquare, GitPullRequest, Activity, ArrowRight, X } from 'lucide-react';
+import { Search, FolderGit2, MessageSquare, GitPullRequest, Activity, ArrowRight, X, Bot } from 'lucide-react';
 import { useUI } from '../../context/UIContext.jsx';
 import { mockRepositories } from '../../data/repositories.js';
 import { mockConversations } from '../../data/conversations.js';
@@ -86,6 +86,23 @@ export function GlobalSearchModal() {
 
         {/* Results List */}
         <div className="max-h-96 overflow-y-auto p-2 divide-y divide-codepilot-border/40 text-left">
+          {/* Ask CodePilot AI Instant Action */}
+          {q && (
+            <div className="py-1">
+              <div
+                onClick={() => handleSelect('/app/assistant')}
+                className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/30 hover:bg-indigo-900/50 cursor-pointer group transition-colors"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Bot className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <span className="text-xs font-medium text-indigo-200 truncate">
+                    Ask CodePilot AI: <span className="text-white font-semibold">&ldquo;{query}&rdquo;</span>
+                  </span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          )}
           {/* Repositories */}
           {filteredRepos.length > 0 && (
             <div className="py-2">

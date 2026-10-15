@@ -6,6 +6,7 @@ import conversationRoutes from './conversation.routes.js';
 import reviewRoutes from './review.routes.js';
 import jobRoutes from './job.routes.js';
 import settingsRoutes from './settings.routes.js';
+import aiRoutes from './ai.routes.js';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/conversations', conversationRoutes);
 router.use('/reviews', reviewRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/settings', settingsRoutes);
+router.use('/ai', aiRoutes);
 
 export default router;

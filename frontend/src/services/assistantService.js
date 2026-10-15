@@ -128,5 +128,64 @@ function handleContextQuery(query) {
     setStorageData(STORAGE_KEY, convs);
 
     return { userMessage, assistantMessage };
-  }
+  },
+
+  async searchCode(repositoryId, query) {
+    if (!IS_DEMO_MODE) {
+      const response = await apiClient.post('/ai/search', { repositoryId, query });
+      return response.data;
+    }
+    await simulateDelay(300);
+    return { query, results: [] };
+  },
+
+  async runAgentTask(repositoryId, prompt) {
+    if (!IS_DEMO_MODE) {
+      const response = await apiClient.post('/ai/agent', { repositoryId, prompt });
+      return response.data;
+    }
+    await simulateDelay(500);
+    return {
+      run_id: `run-${Date.now()}`,
+      status: 'COMPLETED',
+      result: `Demo Agent completed task: ${prompt}`,
+      steps: [
+        { iteration: 1, state: 'PLANNING', thought: 'Constructed bounded plan' },
+        { iteration: 2, state: 'RETRIEVING', thought: 'Retrieved codebase context' },
+        { iteration: 3, state: 'COMPLETED', thought: 'Task completed successfully' },
+      ],
+    };
+  },
+
+  async proposePatch(repositoryId, taskDescription, affectedFiles = null) {
+    if (!IS_DEMO_MODE) {
+      const response = await apiClient.post('/ai/patches', { repositoryId, taskDescription, affectedFiles });
+      return response.data;
+    }
+    await simulateDelay(400);
+    return {
+      patch_id: `patch-${Date.now()}`,
+      title: `Fix: ${taskDescription}`,
+      diff: `--- a/file.js\n+++ b/file.js\n@@ -1,2 +1,3 @@\n+ // Demo fix\n`,
+      status: 'pending',
+    };
+  },
+
+  async applyPatch(patchId, repositoryId) {
+    if (!IS_DEMO_MODE) {
+      const response = await apiClient.post(`/ai/patches/${patchId}/apply`, { repositoryId });
+      return response.data;
+    }
+    await simulateDelay(300);
+    return { patch_id: patchId, status: 'applied' };
+  },
+
+  async verifyPatch(patchId, testCommand = null) {
+    if (!IS_DEMO_MODE) {
+      const response = await apiClient.post(`/ai/patches/${patchId}/verify`, { testCommand });
+      return response.data;
+    }
+    await simulateDelay(400);
+    return { patch_id: patchId, passed: true, checks: [{ name: 'Test Suite', passed: true }] };
+  },
 };

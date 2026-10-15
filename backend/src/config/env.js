@@ -12,6 +12,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('15m'),
   REFRESH_TOKEN_EXPIRES_IN: z.string().default('7d'),
   MONGODB_URI: z.string().default('mongodb://localhost:27017/codepilot'),
+  AI_SERVICE_URL: z.string().default('http://localhost:8000'),
+  INTERNAL_SERVICE_KEY: z.string().default('dev-internal-service-secret-key-32chars-min'),
 });
 
 const parsed = envSchema.safeParse(process.env);

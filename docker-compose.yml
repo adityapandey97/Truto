@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # MongoDB Database Service
+  # MongoDB Database Service (Primary document store for users, repos, chats, jobs)
   mongodb:
     image: mongo:7.0
     container_name: codepilot-mongodb
@@ -20,6 +20,52 @@ services:
       timeout: 5s
       retries: 5
 
+  # PostgreSQL with pgvector (Vector embeddings and semantic code search)
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: codepilot-postgres
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: codepilot_vectors
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./ai/app/migrations/001_initial_pgvector.sql:/docker-entrypoint-initdb.d/001_initial_pgvector.sql
+    networks:
+      - codepilot-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Python FastAPI AI Microservice (RAG, AST parsing, Agent Orchestrator, Embeddings)
+  ai-service:
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    container_name: codepilot-ai-service
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    environment:
+      ENVIRONMENT: production
+      AI_SERVICE_PORT: 8000
+      INTERNAL_SERVICE_KEY: dev-internal-service-secret-key-32chars-min
+      POSTGRES_URI: postgresql://postgres:postgrespassword@postgres:5432/codepilot_vectors
+      ENABLE_PGVECTOR: 'true'
+      LLM_PROVIDER: mock
+      EMBEDDING_PROVIDER: mock
+      EMBEDDING_DIM: 384
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - codepilot-network
+
   # Express.js REST API Backend Service
   backend:
     build:
@@ -37,9 +83,13 @@ services:
       JWT_SECRET: production-grade-cryptographic-jwt-secret-min-32-chars!
       JWT_EXPIRES_IN: 15m
       REFRESH_TOKEN_EXPIRES_IN: 7d
+      AI_SERVICE_URL: http://ai-service:8000
+      INTERNAL_SERVICE_KEY: dev-internal-service-secret-key-32chars-min
     depends_on:
       mongodb:
         condition: service_healthy
+      ai-service:
+        condition: service_started
     networks:
       - codepilot-network
 
@@ -66,4 +116,6 @@ networks:
 
 volumes:
   mongo_data:
+    driver: local
+  postgres_data:
     driver: local
